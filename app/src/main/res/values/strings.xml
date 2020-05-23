@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">GITHUB_IFNO</string>
+    <string name="Title_name">GitHub Users</string>
+    <string name="users_str">Users</string>
 </resources>
