@@ -2,12 +2,24 @@ package com.example.github_ifno;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Environment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 
 import androidx.cardview.widget.CardView;
@@ -28,6 +40,7 @@ public class MyAdapter extends  RecyclerView.Adapter<RecyclerView.ViewHolder>{
     MainActivity m_MainActivity;
     public ArrayList<Users> m_Users;
     private static final String ACTIVITY_TAG="MyAdapter";
+
 
     public MyAdapter(Context context, MainActivity m_tmp, ArrayList<Users> tmp_Users)
     {
@@ -55,6 +68,18 @@ public class MyAdapter extends  RecyclerView.Adapter<RecyclerView.ViewHolder>{
             {
                 VHitem.job_title.setVisibility(View.GONE);
             }
+
+        File has_file = new File(Environment.getExternalStorageDirectory().toString() + File.separator + "tmp_image/"+m_Users.get(position).getlogin()+".png");
+        if (has_file.exists()) {
+                Bitmap myBitmap = BitmapFactory.decodeFile(has_file.getAbsolutePath());
+                VHitem.poto.setImageBitmap(myBitmap);
+        }
+
+
+
+
+        new DownloadImageTask(VHitem.poto)
+                .execute(m_Users.get(position).getavatar_url(),m_Users.get(position).getlogin());
     }
 
     public int getItemViewType(int position) {
@@ -70,6 +95,7 @@ public class MyAdapter extends  RecyclerView.Adapter<RecyclerView.ViewHolder>{
         private TextView user_name;
         private TextView job_title;
         private ConstraintLayout item_layout;
+        private ImageView poto;
 
         private CardView cardview_id;
 
@@ -77,11 +103,14 @@ public class MyAdapter extends  RecyclerView.Adapter<RecyclerView.ViewHolder>{
             super(itemView);
             user_name = (TextView)itemView.findViewById(R.id.user_name);
             job_title = (TextView)itemView.findViewById(R.id.job_title);
+            poto = (ImageView)itemView.findViewById(R.id.poto);
             item_layout = (ConstraintLayout)itemView.findViewById(R.id.item_layout);
 
             this.user_name.setOnClickListener(this);
             this.job_title.setOnClickListener(this);
             this.item_layout.setOnClickListener(this);
+
+
 
 
             itemView.setOnClickListener(this);
@@ -101,4 +130,59 @@ public class MyAdapter extends  RecyclerView.Adapter<RecyclerView.ViewHolder>{
 
         }
     }
+
+    private class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
+        ImageView bmImage;
+        String getlogin;
+
+        public DownloadImageTask(ImageView bmImage) {
+            this.bmImage = bmImage;
+        }
+
+        protected Bitmap doInBackground(String... urls) {
+            String urldisplay = urls[0];
+            getlogin = urls[1];
+            Bitmap mIcon11 = null;
+            try {
+                InputStream in = new java.net.URL(urldisplay).openStream();
+                mIcon11 = BitmapFactory.decodeStream(in);
+            } catch (Exception e) {
+                Log.e("Error", e.getMessage());
+                e.printStackTrace();
+            }
+            return mIcon11;
+        }
+
+        protected void onPostExecute(Bitmap result) {
+            // m_photo.setImageBitmap(result);
+
+            File folder = new File(Environment.getExternalStorageDirectory() +
+                    File.separator + "tmp_image");
+            boolean success = true;
+            if (!folder.exists()) {
+                success = folder.mkdirs();
+            }
+            if (success) {
+                // Do something on success
+            } else {
+                // Do something else on failure
+            }
+
+            File has_file = new File(Environment.getExternalStorageDirectory().toString() + File.separator + "tmp_image/"+getlogin+".png");
+            if (!has_file.exists()) {
+
+                try {
+                    FileOutputStream out = new FileOutputStream(has_file);
+                    result.compress(Bitmap.CompressFormat.PNG, 90, out);
+                    out.flush();
+                    out.close();
+                    m_MainActivity.change_ui();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+            }
+        }
+    }
+
 }

@@ -6,6 +6,7 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Environment;
 import android.util.Log;
 import android.view.View;
 import android.view.textclassifier.TextClassification;
@@ -15,6 +16,7 @@ import android.widget.TextView;
 
 import org.w3c.dom.Text;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
@@ -60,7 +62,6 @@ public class User_infoActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
              finish();
-
             }
         });
 
@@ -68,8 +69,15 @@ public class User_infoActivity extends AppCompatActivity {
 
     public void updateui(){
         super.onStart();
-        new DownloadImageTask(m_photo)
-                .execute(m_oneUser.getavatar_url());
+
+        File has_file = new File(Environment.getExternalStorageDirectory().toString() + File.separator + "tmp_image/"+m_oneUser.getavatar_url()+".png");
+        if (has_file.exists()) {
+            Bitmap myBitmap = BitmapFactory.decodeFile(has_file.getAbsolutePath());
+            m_photo.setImageBitmap(myBitmap);
+        }else {
+            new DownloadImageTask(m_photo)
+                    .execute(m_oneUser.getavatar_url());
+        }
 
         user_name.setText(m_oneUser.getname());
         group_name.setText(m_oneUser.getcompany());
