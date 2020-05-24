@@ -26,7 +26,6 @@ public class MainActivity extends AppCompatActivity {
         super.onStart();
 
         m_users_list = (RecyclerView)findViewById(R.id.users_list);
-        //     recyclerView2.setVisibility(View.GONE);
         m_users_list.setHasFixedSize(true);
 
         final GridLayoutManager gridLayoutManager2 = new GridLayoutManager(this, 1);
@@ -94,6 +93,8 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
+
+
 
 
     }
