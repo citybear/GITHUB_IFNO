@@ -8,7 +8,7 @@
 
 
     <ImageView
-        android:id="@+id/imageView3"
+        android:id="@+id/close"
         android:layout_width="30dp"
         android:layout_height="30dp"
         android:layout_marginStart="16dp"
@@ -33,6 +33,7 @@
         >
 
         <ImageView
+            android:id="@+id/photo"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:src="@mipmap/android_test"
@@ -43,7 +44,6 @@
         android:id="@+id/user_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="TextView"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
@@ -114,7 +114,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:text="test" />
+      />
 
         <TextView
             android:id="@+id/job_title"
@@ -125,7 +125,8 @@
             android:background="@drawable/blue_round"
             android:paddingLeft="10dp"
             android:paddingRight="10dp"
-            android:text="job_title"
+            android:text="STAFF"
+            android:visibility="gone"
             android:textColor="@android:color/white"
             app:layout_constraintBottom_toBottomOf="parent"
             tools:layout_editor_absoluteX="130dp" />
@@ -152,7 +153,6 @@
         android:id="@+id/address_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/app_name"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.2"
@@ -180,7 +180,7 @@
         android:id="@+id/link_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/app_name"
+        android:textColor="@android:color/holo_blue_bright"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.2"

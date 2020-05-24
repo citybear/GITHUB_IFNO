@@ -14,17 +14,20 @@ public class MainActivity extends AppCompatActivity {
 
     private MyAdapter m_Adapter;
     private RecyclerView m_users_list;
+    private cmd_routine m_cmd_routine;
+    private ArrayList<Users> m_Users= new ArrayList<Users>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         setTitle(getResources().getString(R.string.Title_name));
+        m_cmd_routine = new cmd_routine(MainActivity.this,m_Users);
     }
     @Override
     protected void onStart() {
         super.onStart();
-
+        m_cmd_routine.touch_trigger(cmd_routine.get_users);
         m_users_list = (RecyclerView)findViewById(R.id.users_list);
         m_users_list.setHasFixedSize(true);
 
@@ -44,25 +47,7 @@ public class MainActivity extends AppCompatActivity {
         m_users_list.addItemDecoration(m_divider);
 
 
-        ArrayList<String> kkk= new ArrayList<String>();
-        kkk.add("jjj");
-        kkk.add("jjj");
-        kkk.add("jjj");
-        kkk.add("jjj");
-        kkk.add("jjj");
-        kkk.add("jjj");
-        kkk.add("jjj");
-        kkk.add("jjj");
-        kkk.add("jjj");
-        kkk.add("jjj");
-        kkk.add("jjj");
-        kkk.add("jjj");
-        kkk.add("jjj");
-        kkk.add("jjj");
-        kkk.add("jjj");
-
-
-        m_Adapter = new MyAdapter(MainActivity.this,MainActivity.this,kkk);
+        m_Adapter = new MyAdapter(MainActivity.this,MainActivity.this,m_Users);
         m_users_list.setAdapter(m_Adapter);
 
 
@@ -94,8 +79,11 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-
-
-
     }
+
+    public void change_ui()
+    {
+        m_Adapter.notifyDataSetChanged();
+    }
+
 }
