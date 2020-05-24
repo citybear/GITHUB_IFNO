@@ -8,6 +8,7 @@ public class oneUser {
     private String site_admin;
     private String blog;
     private String avatar_url;
+    private String login;
 
     oneUser()
     {
@@ -38,6 +39,10 @@ public class oneUser {
     {
         avatar_url = value;
     }
+    public void setlogin(String value)
+    {
+        login = value;
+    }
 
 
 
@@ -66,6 +71,10 @@ public class oneUser {
     public String getavatar_url()
     {
         return avatar_url;
+    }
+    public String getlogin()
+    {
+        return login;
     }
 
 }

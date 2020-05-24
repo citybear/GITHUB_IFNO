@@ -16,10 +16,7 @@ import android.widget.TextView;
 
 import java.io.File;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.io.InputStream;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.ArrayList;
 
 import androidx.cardview.widget.CardView;
@@ -33,13 +30,12 @@ import androidx.recyclerview.widget.RecyclerView;
 public class MyAdapter extends  RecyclerView.Adapter<RecyclerView.ViewHolder>{
     private static final int TYPE_ITEM = 1;
 
-    //Header header;
-  //  public Product m_product;
     private Context m_context;
     public  int  AdapterPosition;
     MainActivity m_MainActivity;
     public ArrayList<Users> m_Users;
     private static final String ACTIVITY_TAG="MyAdapter";
+    private ArrayList<Integer> has_serch=new ArrayList<Integer>();
 
 
     public MyAdapter(Context context, MainActivity m_tmp, ArrayList<Users> tmp_Users)
@@ -80,9 +76,26 @@ public class MyAdapter extends  RecyclerView.Adapter<RecyclerView.ViewHolder>{
 
         new DownloadImageTask(VHitem.poto)
                 .execute(m_Users.get(position).getavatar_url(),m_Users.get(position).getlogin());
+
+
+
+        if(position >0 && position%19 == 0 && position < 100) {  //20筆0~19因此除以19
+
+            for(int value : has_serch)
+            {
+                if(value == position)
+                {
+                    return;
+                }
+            }
+            has_serch.add(position);
+
+            m_MainActivity.m_cmd_routine.touch_trigger(cmd_routine.get_users,(position/19)*20);
+        }
     }
 
     public int getItemViewType(int position) {
+
         return TYPE_ITEM;
     }
 

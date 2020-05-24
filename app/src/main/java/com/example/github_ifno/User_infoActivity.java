@@ -9,21 +9,11 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.util.Log;
 import android.view.View;
-import android.view.textclassifier.TextClassification;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-
-import org.w3c.dom.Text;
-
 import java.io.File;
-import java.io.IOException;
 import java.io.InputStream;
-import java.net.MalformedURLException;
-import java.net.URL;
-
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.RecyclerView;
 
 public class User_infoActivity extends AppCompatActivity {
     private oneUser m_oneUser;
@@ -68,9 +58,8 @@ public class User_infoActivity extends AppCompatActivity {
     }
 
     public void updateui(){
-        super.onStart();
 
-        File has_file = new File(Environment.getExternalStorageDirectory().toString() + File.separator + "tmp_image/"+m_oneUser.getavatar_url()+".png");
+        File has_file = new File(Environment.getExternalStorageDirectory().toString() + File.separator + "tmp_image/"+m_oneUser.getlogin()+".png");
         if (has_file.exists()) {
             Bitmap myBitmap = BitmapFactory.decodeFile(has_file.getAbsolutePath());
             m_photo.setImageBitmap(myBitmap);
@@ -98,13 +87,6 @@ public class User_infoActivity extends AppCompatActivity {
         });
 
 
-
-/**
-        m_oneUser.getname();
-        m_oneUser.getcompany();
-        m_oneUser.getsite_admin();
-        m_oneUser.getblog();
- **/
     }
 
     private class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
@@ -121,7 +103,7 @@ public class User_infoActivity extends AppCompatActivity {
                 InputStream in = new java.net.URL(urldisplay).openStream();
                 mIcon11 = BitmapFactory.decodeStream(in);
             } catch (Exception e) {
-                Log.e("Error", e.getMessage());
+                Log.e("User_infoActivity", e.getMessage());
                 e.printStackTrace();
             }
             return mIcon11;

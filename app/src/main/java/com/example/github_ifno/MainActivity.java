@@ -9,7 +9,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.Manifest;
 import android.content.pm.PackageManager;
-import android.os.Build;
 import android.os.Bundle;
 
 import java.util.ArrayList;
@@ -18,7 +17,7 @@ public class MainActivity extends AppCompatActivity {
 
     private MyAdapter m_Adapter;
     private RecyclerView m_users_list;
-    private cmd_routine m_cmd_routine;
+    public cmd_routine m_cmd_routine;
     private ArrayList<Users> m_Users = new ArrayList<Users>();
     private static final int REQUEST_EXTERNAL_STORAGE = 1;
 
@@ -97,7 +96,7 @@ public class MainActivity extends AppCompatActivity {
             );
         } else {
 
-            m_cmd_routine.touch_trigger(cmd_routine.get_users);
+            m_cmd_routine.touch_trigger(cmd_routine.get_users,0);
         }
 
     }
@@ -111,7 +110,7 @@ public class MainActivity extends AppCompatActivity {
         switch (requestCode) {
             case REQUEST_EXTERNAL_STORAGE:
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    m_cmd_routine.touch_trigger(cmd_routine.get_users);
+                    m_cmd_routine.touch_trigger(cmd_routine.get_users,0);
                 }
         }
     }

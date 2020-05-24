@@ -1,27 +1,13 @@
 package com.example.github_ifno;
 
-
-import android.content.Intent;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
-import android.graphics.Paint;
-import android.net.Uri;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.widget.Button;
-import android.widget.TextView;
-import android.widget.Toast;
-
-
+import android.util.Log;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Vector;
 import java.util.concurrent.TimeUnit;
-
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.OkHttpClient;
@@ -76,12 +62,17 @@ public class cmd_routine implements Runnable {
                     e.printStackTrace();
                 }
             }
-
-            switch (ｍ_queue.remove(0)[0]) {
+            int [] get_falg = ｍ_queue.remove(0);
+            switch (get_falg[0]) {
                 case get_users:
+                    Log.e("cmd_routine", "https://api.github.com/users?since="+get_falg[1]+"&per_page="+20);
+                    if(get_falg[1] == 0)
+                    {
+                        m_Users.clear();
+                    }
 
                     Request request = new Request.Builder()
-                            .url("https://api.github.com/users?page=0&per_page=100")
+                            .url("https://api.github.com/users?since="+get_falg[1]+"&per_page="+20)
                             .build();
 
                     m_client = new OkHttpClient()
@@ -190,7 +181,6 @@ public class cmd_routine implements Runnable {
                         @Override
                         public void onResponse(Call call, Response response) throws IOException {
 
-                            //        JSONObject reader3 = null;
                             try {
 
 
@@ -204,7 +194,7 @@ public class cmd_routine implements Runnable {
                                     m_oneUser.setsite_admin(reader.getString("site_admin"));
                                     m_oneUser.setblog(reader.getString("blog"));
                                     m_oneUser.setavatar_url(reader.getString("avatar_url"));
-
+                                    m_oneUser.setlogin(reader.getString("login"));
 
 
                                 m_User_infoActivity.runOnUiThread(new Runnable() {
@@ -234,6 +224,12 @@ public class cmd_routine implements Runnable {
     }
     public void touch_trigger(int value_flag) {
         ｍ_queue.add(new int[]{value_flag});
+        synchronized (this) {
+            notify();
+        }
+    }
+    public void touch_trigger(int value_flag,int since) {
+        ｍ_queue.add(new int[]{value_flag,since});
         synchronized (this) {
             notify();
         }
